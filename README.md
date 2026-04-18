@@ -783,6 +783,345 @@ with open(f'{OUTPUT_MODELS_PATH}model_2026_04_18.pkl', 'wb') as f:
 This structure keeps your Data Science work professional, scalable, and collaboration-ready.
 
 ---
+
+## 🔒 Organizing Raw Data, Processed Data, and Output Artifacts
+
+Data organization across its lifecycle is critical for reproducibility, auditability, and preventing costly errors. Understanding the difference between raw, processed, and output data ensures your analysis remains trustworthy and maintainable.
+
+### The Data Lifecycle
+
+**Three distinct stages of data:**
+
+1. **Raw Data** → **Processed Data** → **Output Artifacts**
+
+Each stage has a specific purpose and should be stored separately.
+
+### Stage 1: Raw Data (Read-Only)
+
+**Purpose:** Original, unmodified source data—the single source of truth.
+
+**Characteristics:**
+- Stored in `/data/raw/` folder
+- Never edited or modified directly
+- Treated as read-only (immutable)
+- Backed up securely
+- Exactly as received from source
+
+**Why Raw Data Matters:**
+- ✅ Preserves data integrity
+- ✅ Enables reproducibility (start from same source)
+- ✅ Provides audit trail
+- ✅ Allows comparison with future versions
+- ✅ Prevents accidental data corruption
+
+**Naming Convention:**
+```
+transactions_2026_04_01.csv      # Date-stamped raw files
+customer_master.xlsx              # Clear source identification
+fraud_incidents_raw.json           # Format and stage indicated
+```
+
+**Example Loading (Read-Only):**
+```python
+import pandas as pd
+
+# Always load from raw, NEVER modify
+raw_data = pd.read_csv('data/raw/transactions_2026_04_01.csv')
+
+# Perform transformations in memory only
+cleaned_data = raw_data.dropna()
+cleaned_data = cleaned_data[cleaned_data['amount'] > 0]
+
+# Save to processed, NOT back to raw
+cleaned_data.to_csv('data/processed/transactions_cleaned.csv', index=False)
+```
+
+### Stage 2: Processed Data (Derived & Traceable)
+
+**Purpose:** Cleaned, transformed data ready for analysis—derived from raw data.
+
+**Characteristics:**
+- Stored in `/data/processed/` folder
+- Created through documented transformations
+- Can be completely regenerated from raw data
+- Clear lineage to raw data
+- Named to indicate processing stage
+
+**Why Processed Data Matters:**
+- ✅ Ready for analysis without breaking raw data
+- ✅ Tracks transformation steps
+- ✅ Enables reproducibility
+- ✅ Acts as checkpoint for long pipelines
+- ✅ Supports collaboration (others know it's safe to use)
+
+**Data Processing Flow:**
+```
+raw_data → [Clean] → [Handle Missing] → [Feature Engineer] → processed_data
+  │           │            │                  │                    │
+  └─ data/raw/    └─ intermediate   └─ intermediate      └─ data/processed/
+```
+
+**Naming Convention:**
+```
+transactions_cleaned.csv           # What was done
+transactions_cleaned_features.csv   # Intermediate stage
+fraud_labels_processed.csv          # Specific outcome
+
+# Better:
+transactions_stage01_cleaned.csv
+transactions_stage02_features.csv
+transactions_stage03_final.csv
+```
+
+**Processing Documentation Example:**
+```python
+"""
+Data Processing Pipeline
+
+Input: data/raw/transactions_2026_04_01.csv
+Output: data/processed/transactions_cleaned.csv
+
+Steps:
+1. Remove rows with missing 'amount'
+2. Filter out transactions <= $0
+3. Remove duplicate rows
+4. Convert timestamp to datetime
+5. Create hour_of_day feature from timestamp
+
+Metadata:
+- Rows input: 1,000,000
+- Rows output: 987,543
+- Rows removed: 12,457 (1.2%)
+- Processing time: 2 minutes
+"""
+
+import pandas as pd
+
+# Load raw data
+raw_df = pd.read_csv('data/raw/transactions_2026_04_01.csv')
+print(f"Loaded {len(raw_df)} rows")
+
+# Step 1: Remove missing amount
+df = raw_df.dropna(subset=['amount'])
+
+# Step 2: Filter invalid amounts
+df = df[df['amount'] > 0]
+
+# Step 3: Remove duplicates
+df = df.drop_duplicates()
+
+# Step 4: Parse timestamps
+df['timestamp'] = pd.to_datetime(df['timestamp'])
+
+# Step 5: Create features
+df['hour_of_day'] = df['timestamp'].dt.hour
+
+# Save processed data
+df.to_csv('data/processed/transactions_cleaned.csv', index=False)
+print(f"Saved {len(df)} rows to processed data")
+```
+
+### Stage 3: Output Artifacts (Results & Reports)
+
+**Purpose:** Final results, visualizations, models, and reports—never used as input.
+
+**Characteristics:**
+- Stored in `/outputs/` subfolders (models/, visualizations/, reports/)
+- Generated from processed data
+- Not used as input to other processes
+- Easily regenerated from processed data
+- Clear naming indicating what they represent
+
+**Why Output Separation Matters:**
+- ✅ Prevents mixing outputs with input data
+- ✅ Makes results easy to find and present
+- ✅ Avoids accidental feedback loops
+- ✅ Supports sharing and reporting
+- ✅ Keeps data folders focused on data
+
+**Output Types & Storage:**
+```
+outputs/
+├── models/
+│   └── fraud_detector_2026_04_18.pkl
+│
+├── visualizations/
+│   ├── fraud_distribution.png
+│   ├── correlation_heatmap.png
+│   └── temporal_trends.html
+│
+└── reports/
+    ├── analysis_summary_2026_04_18.csv
+    ├── model_metrics.json
+    └── findings.txt
+```
+
+**Output Naming Convention:**
+```
+fraud_detector_2026_04_18.pkl           # Model: name_date.format
+correlation_heatmap_v2.png              # Plot: description_version.format
+analysis_summary_transactions.csv        # Report: type_subject.format
+metrics_train_vs_test.json               # Metrics: metric_stage.format
+```
+
+### One-Directional Data Flow
+
+**Correct Flow (Reproducible):**
+```
+raw/ → process → processed/ → analyze → outputs/
+ ↓                             ↓
+Never touch          Use as input only
+```
+
+**Incorrect Flow (Risky):**
+```
+raw/ ← ← ← ← processed/     # ❌ Circular dependency
+  ↓         ↓
+Changes!   Lost track of source
+```
+
+**Why One-Directional Matters:**
+- ✅ Prevents data corruption
+- ✅ Maintains clear causality
+- ✅ Enables reproducibility
+- ✅ Avoids "forking" of data
+- ✅ Simplifies debugging
+
+### Data Contamination Prevention
+
+**Common Mistakes to Avoid:**
+
+❌ **Mistake 1: Modifying Raw Data**
+```python
+# WRONG - never do this!
+df = pd.read_csv('data/raw/transactions.csv')
+df['amount'] = df['amount'].fillna(0)  # Modifying raw
+df.to_csv('data/raw/transactions.csv')  # Overwriting raw!
+```
+
+✅ **Correct Approach:**
+```python
+# RIGHT - load, transform, save separately
+df_raw = pd.read_csv('data/raw/transactions.csv')
+df_processed = df_raw.copy()
+df_processed['amount'] = df_processed['amount'].fillna(0)
+df_processed.to_csv('data/processed/transactions_cleaned.csv')
+```
+
+❌ **Mistake 2: Mixing Outputs with Data**
+```python
+# WRONG - outputs in data folder
+df.to_csv('data/model_results.csv')      # Should be in outputs/
+plt.savefig('data/fraud_plot.png')       # Should be in outputs/
+```
+
+✅ **Correct Approach:**
+```python
+# RIGHT - separate folders for each purpose
+df.to_csv('outputs/reports/analysis_results.csv')
+plt.savefig('outputs/visualizations/fraud_distribution.png')
+```
+
+❌ **Mistake 3: No Processing Documentation**
+```python
+# WRONG - unclear how data was processed
+df_processed = some_complex_transformation(raw_df)
+df_processed.to_csv('data/processed/data.csv')  # How was it processed?
+```
+
+✅ **Correct Approach:**
+```python
+# RIGHT - document each step
+"""
+Processing Steps:
+1. Removed null values (12 rows)
+2. Filtered outliers > 3 std dev (45 rows)
+3. Created lag features
+Output: 9,943 rows
+"""
+df_processed = raw_df.dropna()
+df_processed = remove_outliers(df_processed)
+df_processed = create_lag_features(df_processed)
+df_processed.to_csv('data/processed/transactions_features_v1.csv')
+```
+
+### Professional Data Organization Checklist
+
+**Raw Data:**
+- ✅ Stored in `/data/raw/`
+- ✅ Never modified directly
+- ✅ Clearly named with dates/sources
+- ✅ Treated as immutable/read-only
+- ✅ Acts as single source of truth
+
+**Processed Data:**
+- ✅ Stored in `/data/processed/`
+- ✅ Created by documented scripts
+- ✅ Completely regenerable from raw
+- ✅ Clearly named to indicate stage
+- ✅ Separate from raw data
+
+**Output Artifacts:**
+- ✅ Stored in `/outputs/` subfolders
+- ✅ Generated from processed data
+- ✅ Never used as input to other processes
+- ✅ Easily regenerated
+- ✅ Clearly named and dated
+
+**Workflow:**
+- ✅ Scripts read from raw only
+- ✅ Scripts write to processed/outputs only
+- ✅ One-directional data flow
+- ✅ No circular dependencies
+- ✅ Full audit trail maintained
+
+### Example Complete Workflow
+
+```python
+# notebook: notebooks/models/train_fraud_detector.ipynb
+
+import pandas as pd
+from src.preprocessing import clean_transactions, engineer_features
+from config.paths import RAW_DATA_PATH, PROCESSED_DATA_PATH, OUTPUT_MODELS_PATH
+
+# STAGE 1: Load raw data (read-only)
+print("Loading raw data...")
+transactions_raw = pd.read_csv(f'{RAW_DATA_PATH}/transactions_raw.csv')
+print(f"Loaded {len(transactions_raw)} rows")
+
+# STAGE 2: Process data (create intermediate files)
+print("\nProcessing data...")
+transactions_clean = clean_transactions(transactions_raw)
+transactions_features = engineer_features(transactions_clean)
+
+# Save processed data for reuse
+transactions_features.to_csv(
+    f'{PROCESSED_DATA_PATH}/transactions_features.csv', 
+    index=False
+)
+print(f"Saved {len(transactions_features)} rows to processed")
+
+# STAGE 3: Train model and save outputs
+print("\nTraining model...")
+model = train_model(transactions_features)
+
+# Save model to outputs (never to data folder)
+with open(f'{OUTPUT_MODELS_PATH}/fraud_detector_v1.pkl', 'wb') as f:
+    pickle.dump(model, f)
+
+# Generate metrics report
+metrics = evaluate_model(model)
+metrics.to_csv(f'{OUTPUT_MODELS_PATH}/model_metrics.csv', index=False)
+
+print("\n✓ Raw data: Unchanged")
+print("✓ Processed data: Saved")
+print("✓ Outputs: Generated")
+print("\nFull pipeline is reproducible!")
+```
+
+This disciplined approach ensures your Data Science work is trustworthy, auditable, and reproducible.
+
+---
 ## �🚀 Getting Started
 
 ### 1️⃣ Prerequisite
