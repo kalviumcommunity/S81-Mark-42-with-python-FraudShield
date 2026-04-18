@@ -133,7 +133,120 @@ python -c "import sys; print(sys.version); import json; print('Success')"
 **Conclusion:** Local development environment is fully verified and stable for Data Science sprint work.
 
 ---
-## �🚀 Getting Started
+## 📓 Launching Jupyter Notebook and Understanding the Home Interface
+
+This section documents the setup and usage of Jupyter Notebook for Data Science workflows in this project.
+
+### Jupyter Launch Configuration
+
+#### Launch Command
+```bash
+jupyter notebook
+```
+
+#### Launch Directory
+**Current Working Directory:** Project root folder (`S81-Mark-42-with-python-FraudShield`)
+
+This ensures that:
+- ✅ Notebooks are created at the project level
+- ✅ Relative paths to data and files are intuitive
+- ✅ All project notebooks are centrally organized
+
+### Jupyter Home Interface Overview
+
+Once launched, the Jupyter Home interface displays:
+
+1. **File and Folder Listing**
+   - Shows all directories and files in the current working directory
+   - Folders are listed with folder icons
+   - Files are listed with type-specific icons
+   - Notebooks show as `.ipynb` files
+
+2. **Navigation Breadcrumbs**
+   - Located at the top of the interface
+   - Shows current folder path
+   - Allows quick navigation back to parent directories
+   - Example: `S81-Mark-42-with-python-FraudShield > backend > notebooks`
+
+3. **Action Buttons**
+   - **New** button: Create new notebooks or text files
+   - **Upload** button: Upload existing files to the current folder
+   - **Refresh** button: Reload the file listing
+
+4. **File Type Indicators**
+   - Folders: Folder icon
+   - Notebooks: Jupyter icon (`.ipynb`)
+   - Python scripts: Python file icon (`.py`)
+   - Data files: Document icons (`.csv`, `.json`, etc.)
+
+### Project Folder Structure
+
+Recommended notebook organization:
+```
+S81-Mark-42-with-python-FraudShield/
+├── backend/
+├── frontend/
+├── notebooks/              # Data Science notebooks go here
+│   ├── exploration/
+│   ├── models/
+│   └── analysis/
+└── README.md
+```
+
+### Creating and Opening a Notebook
+
+#### Steps to Create a New Notebook:
+1. Navigate to desired folder (e.g., `notebooks/`)
+2. Click **New** button → Select **Python 3** (or your environment's kernel)
+3. Notebook opens in a new tab
+4. Name the notebook: `Untitled.ipynb` → Rename as needed
+5. Start coding in cells
+
+#### Verifying Notebook Execution:
+```python
+# Simple test cell
+import sys
+print(f"Python {sys.version}")
+print("✓ Notebook is functional")
+```
+
+**Expected Output:**
+```
+Python 3.10.x (or your version)
+✓ Notebook is functional
+```
+
+### Notebook File Management
+
+#### Saving a Notebook
+- **Auto-save:** Jupyter saves periodically
+- **Manual save:** Press `Ctrl+S` or use File → Save
+
+#### Renaming a Notebook
+1. Right-click on notebook in Home interface
+2. Select **Rename**
+3. Enter new name (extension `.ipynb` is automatic)
+
+#### Closing a Notebook
+1. Use File → Close and Halt (saves before closing)
+2. Or return to Home and close the browser tab
+
+#### Reopening a Notebook
+1. Navigate to the folder containing the notebook
+2. Click on the notebook name in the file listing
+3. Notebook opens in a new tab
+
+### Workspace Organization Checklist
+- ✅ Jupyter launched from project root directory
+- ✅ Notebooks stored in dedicated `notebooks/` folder
+- ✅ Clear folder structure (exploration, models, analysis)
+- ✅ Notebook names are descriptive and meaningful
+- ✅ All notebooks can execute Python code successfully
+- ✅ Relative paths reference project structure correctly
+
+**Important:** Always launch Jupyter from the project root to ensure consistent relative paths and file organization.
+
+---## �🚀 Getting Started
 
 ### 1️⃣ Prerequisite
 Make sure you have **Node.js** and **Python 3** installed.
