@@ -10,7 +10,63 @@ Modern full-stack web application with rule-based fraud detection and **Machine 
 
 ---
 
-## 🚀 Getting Started
+## � Local Development Environment Setup
+
+This project requires Python and Anaconda for Data Science and ML operations. Below is the verified setup for this development environment.
+
+### Environment Details
+- **Operating System:** Windows 11
+- **Python Version:** 3.10.x (or later)
+- **Anaconda Version:** Latest (Miniconda/Anaconda3)
+- **Environment Type:** Conda (base environment)
+
+### Installation & Verification Steps
+
+#### 1. Python Installation
+Python is included with Anaconda. To verify after Anaconda installation:
+```bash
+python --version
+```
+Expected output: `Python 3.10.x` or higher
+
+#### 2. Anaconda Installation
+- Downloaded and installed Anaconda from [anaconda.com](https://www.anaconda.com/download)
+- Installation completed successfully with default settings
+- Conda is configured in system PATH
+
+To verify Conda installation:
+```bash
+conda --version
+```
+Expected output: `conda X.X.X` (version number)
+
+#### 3. Conda Environment Validation
+Activate the base environment and verify functionality:
+```bash
+conda activate
+python -c "import sys; print(sys.version)"
+```
+
+#### 4. Project Environment Setup
+For this specific project, use the backend virtual environment:
+```bash
+cd backend
+python -m venv venv
+.\venv\Scripts\Activate.ps1  # Windows PowerShell
+```
+
+Verify the environment is active (you should see `(venv)` in your terminal).
+
+### Verification Checklist
+✅ Python executable accessible from terminal  
+✅ Conda package manager accessible from terminal  
+✅ Virtual environment can be created and activated  
+✅ Python REPL launches without errors  
+✅ Ready for ML library installation (scikit-learn, pandas, etc.)
+
+---
+
+## �🚀 Getting Started
 
 ### 1️⃣ Prerequisite
 Make sure you have **Node.js** and **Python 3** installed.
