@@ -245,7 +245,121 @@ Python 3.10.x (or your version)
 - ✅ Relative paths reference project structure correctly
 
 **Important:** Always launch Jupyter from the project root to ensure consistent relative paths and file organization.
+---
 
+## 📝 Understanding Notebook Cells: Code vs Markdown
+
+Jupyter Notebooks support two main cell types: **Code cells** and **Markdown cells**. Understanding the difference and using them intentionally is essential for writing professional, readable Data Science notebooks.
+
+### Code Cells
+
+**Purpose:** Execute Python code and display results
+
+**Characteristics:**
+- Contains executable Python statements
+- Runs when you press `Ctrl+Enter` or click the Run button
+- Displays output, errors, and results below the cell
+- Can use variables from previously executed cells
+- Should contain logic, not lengthy explanations
+
+**When to use:**
+- Executing data operations
+- Running calculations
+- Creating visualizations
+- Writing functions and classes
+
+**Example:**
+```python
+# Code cells should focus on logic
+import pandas as pd
+
+data = [1, 2, 3, 4, 5]
+total = sum(data)
+print(f"Sum: {total}")
+```
+
+### Markdown Cells
+
+**Purpose:** Explain, describe, and structure your notebook with formatted text
+
+**Characteristics:**
+- Contains formatted text using Markdown syntax
+- Does not execute code (for explanation only)
+- Supports headings, bold, italics, lists, and tables
+- Renders when cell is executed
+- Essential for notebook documentation
+
+**When to use:**
+- Writing section titles and headings
+- Explaining what the next code cell will do
+- Interpreting code results
+- Documenting findings and conclusions
+- Providing context and narrative flow
+
+**Example:**
+```markdown
+## Data Summary
+
+This code cell calculates the sum of our dataset.
+We expect the result to be 15 (1+2+3+4+5).
+```
+
+### Professional Notebook Structure
+
+A well-organized notebook alternates between explanation and execution:
+
+```
+Markdown: "Load and explore the dataset"
+    ↓
+Code: Load data, display shape
+    ↓
+Markdown: "The dataset contains X rows and Y columns"
+    ↓
+Code: Analyze features
+    ↓
+Markdown: "Key insights from the analysis"
+```
+
+### Cell Type Conversions
+
+**To change a cell from Code to Markdown:**
+1. Select the cell
+2. Press `M` (keyboard shortcut) or use Cell menu → Cell Type → Markdown
+
+**To change a cell from Markdown to Code:**
+1. Select the cell
+2. Press `Y` (keyboard shortcut) or use Cell menu → Cell Type → Code
+
+### Best Practices for Notebook Writing
+
+✅ **DO:**
+- Use Markdown cells to explain your reasoning
+- Separate execution from explanation
+- Write descriptive titles and section headings
+- Document findings and conclusions
+- Treat notebooks as documents meant for humans
+
+❌ **DON'T:**
+- Write long explanations as code comments only
+- Leave notebooks as unexplained code dumps
+- Mix extensive reasoning inside Code cells
+- Assume readers will understand your code without context
+- Use notebooks as temporary scratchpads
+
+### Sample Notebook
+
+A complete example demonstrating proper Code and Markdown cell usage is included in:
+```
+notebooks/01_notebook_cells_demo.ipynb
+```
+
+This notebook shows:
+- ✅ Markdown cells explaining each section
+- ✅ Code cells with focused Python logic
+- ✅ Clear separation between execution and explanation
+- ✅ Professional documentation and structure
+
+**Remember:** Clear notebooks are readable notebooks. Readable notebooks are professional notebooks.
 ---## �🚀 Getting Started
 
 ### 1️⃣ Prerequisite
