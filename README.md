@@ -360,7 +360,115 @@ This notebook shows:
 - ✅ Professional documentation and structure
 
 **Remember:** Clear notebooks are readable notebooks. Readable notebooks are professional notebooks.
----## �🚀 Getting Started
+
+---
+
+## ⚙️ Running, Restarting, and Interrupting Jupyter Kernels
+
+The Jupyter **kernel** is the Python interpreter that executes your code and maintains your notebook's state. Understanding kernel control is essential for reproducibility, debugging, and preventing hidden state issues.
+
+### What is a Kernel?
+
+A kernel:
+- **Executes cells** when you run them
+- **Remembers variables** from previously executed cells (even if cells run out of order)
+- **Maintains state** until it is restarted
+- Can be **interrupted** if execution is taking too long
+
+### Running Cells Intentionally
+
+**Best Practice:** Run cells from top to bottom, but understand that the kernel remembers ALL variables from any cell you've executed, regardless of order.
+
+**Problem:** Code might work once but fail later if cells depend on hidden execution order.
+
+```python
+# Cell 1: Initialize variable
+count = 0
+
+# Cell 2: Modify variable (depends on Cell 1)
+count += 5
+
+# Cell 3: Use variable (depends on Cells 1 & 2)
+print(count)  # Works because Cells 1 & 2 were run
+```
+
+If someone runs only Cell 3, it will fail with `NameError: name 'count' is not defined`.
+
+### Kernel Interruption
+
+**Use interrupt to stop a long-running or stuck cell:**
+
+- Click the **Stop** button (⏹️) in Jupyter toolbar
+- Or press **I, I** (press I twice) in the notebook
+- Stops execution but **preserves** kernel state and variables
+- Useful for accidental infinite loops or slow computations
+
+**When to interrupt:**
+- Cell is taking unexpectedly long
+- You started an infinite loop by mistake
+- Execution is clearly frozen
+
+### Kernel Restart
+
+**Use restart to clear all state and reset the notebook:**
+
+- Use Kernel menu → Restart Kernel → Restart
+- Or click the **Restart** button in the toolbar
+- Clears all variables from memory
+- Resets execution counter to 0
+- Wipes all outputs (but not your code)
+
+**When to restart:**
+- Testing notebook reproducibility
+- Variables are stale or causing issues
+- Need a clean state to debug
+- **Before final submission** (best practice)
+
+### Restart + Run All Best Practice
+
+**This is professional practice:**
+
+1. **Restart the kernel** (clears all state)
+2. **Run All cells** (Kernel menu → Restart & Run All)
+3. **Verify all cells execute successfully**
+4. **Then submit/share the notebook**
+
+This ensures your notebook works for anyone who opens it, not just on your machine.
+
+### Recognizing Kernel Issues
+
+| Symptom | Likely Cause | Solution |
+|---------|-------------|----------|
+| Cell works once but fails later | Cell order dependency, stale variables | Restart + Run All |
+| "NameError: name X not defined" | Variable not initialized in any run cell | Check cell order, restart + run all |
+| Notebook very slow | Large computation or infinite loop | Interrupt + optimize code |
+| Code worked before, now fails | Variables modified unexpectedly | Restart + Run All |
+
+### Example Notebook
+
+A complete demonstration of kernel control is included in:
+```
+notebooks/02_kernel_management_demo.ipynb
+```
+
+This notebook shows:
+- ✅ Cells depending on each other's variables
+- ✅ Long-running code (interruptible)
+- ✅ Kernel state awareness
+- ✅ Restart and reproducibility testing
+
+### Professional Checklist
+
+Before submitting any notebook:
+- ✅ Restart the kernel
+- ✅ Run All cells from top to bottom
+- ✅ All cells execute without errors
+- ✅ All expected outputs appear
+- ✅ Notebook is reproducible for others
+
+---
+
+## 🚀 Getting Started
 
 ### 1️⃣ Prerequisite
 Make sure you have **Node.js** and **Python 3** installed.
