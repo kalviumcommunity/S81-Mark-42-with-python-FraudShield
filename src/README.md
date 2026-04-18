@@ -17,6 +17,7 @@ This folder contains reusable Python modules, utilities, and helper functions.
 - ✅ Keep functions focused and testable
 - ✅ Use consistent naming conventions
 
+
 ## Example Usage
 ```python
 # In your notebook
