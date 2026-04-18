@@ -635,7 +635,154 @@ Clear Markdown:
 5. **Demonstrates professionalism** - Shows intentional, thoughtful work
 
 ---
+## 📁 Project Folder Structure
 
+A clean, logical folder structure is essential for Data Science projects. It ensures clarity, reproducibility, and makes collaboration effortless. This project follows industry-standard organization:
+
+```
+S81-Mark-42-with-python-FraudShield/
+│
+├── data/                          # Data storage
+│   ├── raw/                       # Original, unmodified source data
+│   └── processed/                 # Cleaned, transformed data
+│
+├── notebooks/                     # Jupyter Notebooks for analysis
+│   ├── 01_notebook_cells_demo.ipynb
+│   ├── 02_kernel_management_demo.ipynb
+│   ├── 03_markdown_documentation_guide.ipynb
+│   ├── exploration/               # EDA and exploration notebooks
+│   ├── models/                    # Model training notebooks
+│   └── analysis/                  # Final analysis and results
+│
+├── outputs/                       # Generated results and artifacts
+│   ├── models/                    # Saved trained models (.pkl)
+│   ├── visualizations/            # Generated plots and charts
+│   └── reports/                   # Analysis reports and metrics
+│
+├── src/                           # Reusable Python modules
+│   ├── __init__.py
+│   ├── preprocessing.py           # Data cleaning functions
+│   ├── utils.py                   # Utility functions
+│   ├── models.py                  # Custom model classes
+│   └── visualization.py           # Plotting functions
+│
+├── config/                        # Configuration and constants
+│   ├── config.py                  # Project configuration
+│   ├── paths.py                   # File path definitions
+│   └── constants.py               # Shared constants
+│
+├── backend/                       # Flask API backend
+│   ├── app.py
+│   ├── model.py
+│   └── requirements.txt
+│
+├── frontend/                      # React UI frontend
+│   ├── src/
+│   └── package.json
+│
+├── README.md                      # Project documentation
+└── .gitignore                     # Git ignore file
+```
+
+### Folder Purpose Guide
+
+**Data Folders:**
+- **data/raw/** - Original, unmodified source data. DO NOT EDIT.
+- **data/processed/** - Cleaned data ready for analysis.
+
+**Code Folders:**
+- **notebooks/** - Jupyter Notebooks for interactive analysis.
+- **src/** - Reusable Python modules and utilities.
+- **config/** - Configuration files and constants.
+
+**Output Folders:**
+- **outputs/models/** - Saved trained models.
+- **outputs/visualizations/** - Generated plots and charts.
+- **outputs/reports/** - Analysis results and metrics.
+
+### Why This Structure Matters
+
+**Prevents Common Problems:**
+- ✅ Avoids scattered files and lost data
+- ✅ Keeps raw data safe from accidental modification
+- ✅ Makes file paths predictable and relative
+- ✅ Enables collaboration without confusion
+- ✅ Facilitates code reuse and debugging
+
+**Benefits for Teams:**
+- Clear organization is instantly understandable
+- New team members can navigate easily
+- Code reviews are straightforward
+- Reproducibility is guaranteed
+- Projects scale smoothly
+
+### Best Practices
+
+**Data Management:**
+- Never modify files in `/data/raw/`
+- Always load from `/data/raw/` in notebooks
+- Save processed data to `/data/processed/` with clear names
+- Document data transformations in notebooks
+
+**Code Organization:**
+- Move reusable code to `/src/` modules
+- Keep notebooks focused on analysis, not utilities
+- Import utilities: `from src.preprocessing import clean_data`
+- Use configuration files instead of hard-coded paths
+
+**Output Management:**
+- Save models with date-stamped names
+- Use descriptive names for visualizations
+- Export metrics and results as reports
+- Don't commit large binary files (use .gitignore)
+
+**Notebook Organization:**
+- `/exploration/` for EDA and data exploration
+- `/models/` for model training and evaluation
+- `/analysis/` for final analysis and insights
+- Name notebooks with clear prefixes (01_, 02_, etc.)
+
+### Detailed Folder Documentation
+
+Each major folder contains a README explaining its purpose:
+- See `data/README.md` for data folder structure
+- See `outputs/README.md` for output management
+- See `src/README.md` for source code organization
+- See `config/README.md` for configuration setup
+
+### Example Workflow
+
+```python
+# In a notebook (notebooks/models/train_model.ipynb)
+
+# 1. Load from raw data
+from config.paths import RAW_DATA_PATH
+import pandas as pd
+
+raw_data = pd.read_csv(f'{RAW_DATA_PATH}transactions.csv')
+
+# 2. Clean using utilities
+from src.preprocessing import clean_data, handle_missing_values
+
+clean_df = clean_data(raw_data)
+
+# 3. Train model
+from src.models import FraudDetectionModel
+
+model = FraudDetectionModel()
+model.fit(clean_df)
+
+# 4. Save outputs
+from config.paths import OUTPUT_MODELS_PATH
+import pickle
+
+with open(f'{OUTPUT_MODELS_PATH}model_2026_04_18.pkl', 'wb') as f:
+    pickle.dump(model, f)
+```
+
+This structure keeps your Data Science work professional, scalable, and collaboration-ready.
+
+---
 ## �🚀 Getting Started
 
 ### 1️⃣ Prerequisite
