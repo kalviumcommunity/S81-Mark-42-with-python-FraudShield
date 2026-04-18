@@ -1121,6 +1121,20 @@ print("\nFull pipeline is reproducible!")
 
 This disciplined approach ensures your Data Science work is trustworthy, auditable, and reproducible.
 
+### 🐍 Python Scripts for Data Analysis
+
+Python scripts are essential for production-ready, automatable data workflows. While Jupyter Notebooks excel at exploration and visualization, scripts provide:
+- Linear top-to-bottom execution
+- Perfect for automation and scheduling  
+- Easy version control and reproducibility
+- Professional data pipelines
+
+**See [PYTHON_SCRIPTS.md](PYTHON_SCRIPTS.md)** for a complete guide on:
+- Creating and running Python scripts
+- Moving code from notebooks to scripts
+- Best practices and common issues
+- Example script: `src/analyze_transactions.py`
+
 ---
 ## �🚀 Getting Started
 
